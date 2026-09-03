@@ -171,6 +171,57 @@
     color: rgba(253,251,255,0.85);
     line-height:1.6;
   }
+  .hero-nombre{
+    font-family:'Bebas Neue', sans-serif;
+    font-size: clamp(38px, 10vw, 64px);
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-shadow: 0 0 18px rgba(242,193,78,0.5);
+    margin-bottom: 4px;
+  }
+  .hero-datos{
+    margin-top: 18px;
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: var(--white);
+    background: rgba(0,0,0,0.35);
+    border: 1px solid rgba(242,193,78,0.4);
+    border-radius: 30px;
+    padding: 10px 20px;
+    display:inline-block;
+  }
+  .hero-gifs{
+    margin-top: 22px;
+    display:flex;
+    gap: 12px;
+    justify-content:center;
+    flex-wrap: wrap;
+  }
+  .hero-gifs img{
+    width: 130px;
+    height: 130px;
+    object-fit: cover;
+    border-radius: 14px;
+    border: 2px solid var(--gold);
+    box-shadow: 0 0 16px rgba(212,52,44,0.4);
+  }
+  .music-toggle{
+    position: fixed;
+    left: 14px;
+    top: 14px;
+    z-index: 70;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(16,9,6,0.7);
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-size: 18px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+  }
   .scrolldown{
     margin-top: 40px;
     font-size: 12px;
@@ -358,6 +409,11 @@
 </head>
 <body>
 
+<audio id="bgm" loop preload="auto">
+  <source src="audio/mexican-huapango-banda.mp3" type="audio/mpeg">
+</audio>
+<button class="music-toggle" id="musicToggle" title="Música" aria-label="Reproducir o silenciar música">🔇</button>
+
 <div class="particles" id="particles"></div>
 
 <nav class="navdots" id="navdots">
@@ -375,10 +431,16 @@
   <div class="overlay dark"></div>
   <div class="content">
     <div class="hero-eyebrow reveal">✦ Estás cordialmente invitado(a) ✦</div>
+    <div class="hero-nombre reveal d1">Lupita</div>
     <div class="hero-titulo reveal d1">Una noche de banda y grupo</div>
     <div class="num44 reveal d2">44</div>
     <div class="anios-tag reveal d3">Años</div>
     <p class="hero-sub reveal d4">Prepárate para brindar, cantar y bailar al ritmo de la banda en una celebración inolvidable.</p>
+    <p class="hero-datos reveal d4">📍 Salón Versalles · Barrio San Juan &nbsp;·&nbsp; 🕒 3:00 PM</p>
+    <div class="hero-gifs reveal d4">
+      <img src="images/gifs/baile-banda-1.gif" alt="Bailando banda" loading="lazy">
+      <img src="images/gifs/baile-banda-2.gif" alt="Bailando banda" loading="lazy">
+    </div>
     <div class="scrolldown reveal d4">↓ Desliza para ver más ↓</div>
   </div>
 </section>
@@ -390,7 +452,7 @@
   <div class="content">
     <div class="chip reveal">📅 Guarda la fecha</div>
     <h2 class="h-titulo reveal d1">24 de <span class="accent">Octubre</span></h2>
-    <p class="desc reveal d2">A partir de las <strong>6:00 PM</strong>. La cuenta regresiva ya comenzó — ¡no faltes!</p>
+    <p class="desc reveal d2">A partir de las <strong>3:00 PM</strong>. La cuenta regresiva ya comenzó — ¡no faltes!</p>
     <div class="countdown reveal d3" id="countdown">
       <div class="box"><span class="n" id="cd-dias">00</span><span class="l">Días</span></div>
       <div class="box"><span class="n" id="cd-horas">00</span><span class="l">Hrs</span></div>
@@ -407,9 +469,9 @@
   <div class="content">
     <div class="chip reveal">📍 Ubicación</div>
     <h2 class="h-titulo reveal d1">Salón <span class="accent">Versalles</span></h2>
-    <p class="desc reveal d2">El escenario perfecto para una celebración que no olvidarás.</p>
+    <p class="desc reveal d2">Barrio San Juan — el escenario perfecto para una celebración que no olvidarás.</p>
     <div class="card reveal d3">
-      <div class="big">🕕 6:00 PM en adelante</div>
+      <div class="big">🕒 3:00 PM en adelante</div>
       <div class="small">Puntualidad = más tiempo de fiesta ✨</div>
     </div>
   </div>
@@ -448,9 +510,9 @@
   <div class="content">
     <div class="chip reveal">✦ Nos vemos pronto ✦</div>
     <h2 class="h-titulo reveal d1">¡Ven a <span class="accent">celebrar!</span></h2>
-    <p class="desc reveal d2">44 años se festejan con toda la energía. Confirma tu asistencia y prepárate para una noche inolvidable.</p>
-    <div class="foot-firma reveal d3">24 Oct · 6:00 PM</div>
-    <div class="foot-sub reveal d4">Salón Versalles · Banda y Grupo en vivo</div>
+    <p class="desc reveal d2">Los 44 años de Lupita se festejan con toda la energía. Confirma tu asistencia y prepárate para una noche inolvidable.</p>
+    <div class="foot-firma reveal d3">24 Oct · 3:00 PM</div>
+    <div class="foot-sub reveal d4">Salón Versalles, Barrio San Juan · Banda y Grupo en vivo</div>
   </div>
 </section>
 
@@ -486,11 +548,11 @@
   }, { threshold: 0.35 });
   sections.forEach(s=>io.observe(s));
 
-  // Countdown al 24 de Octubre 6:00 PM
+  // Countdown al 24 de Octubre 3:00 PM
   const target = new Date();
   target.setMonth(9); // Octubre (0-indexed)
   target.setDate(24);
-  target.setHours(18,0,0,0);
+  target.setHours(15,0,0,0);
   if(target < new Date()){ target.setFullYear(target.getFullYear()+1); }
 
   function tick(){
@@ -507,6 +569,38 @@
   }
   tick();
   setInterval(tick, 1000);
+
+  // Música de fondo
+  const bgm = document.getElementById('bgm');
+  const musicToggle = document.getElementById('musicToggle');
+  let musicOn = false;
+
+  function setMusicIcon(){
+    musicToggle.textContent = musicOn ? '🔊' : '🔇';
+  }
+
+  function playMusic(){
+    bgm.play().then(()=>{ musicOn = true; setMusicIcon(); }).catch(()=>{});
+  }
+
+  // Intento de reproducir automáticamente al primer toque/scroll (los navegadores bloquean el autoplay con sonido)
+  ['click','touchstart','scroll','keydown'].forEach(evt=>{
+    document.addEventListener(evt, function once(){
+      if(!musicOn) playMusic();
+      document.removeEventListener(evt, once);
+    }, { once:true });
+  });
+
+  musicToggle.addEventListener('click', ()=>{
+    if(musicOn){
+      bgm.pause();
+      musicOn = false;
+    } else {
+      bgm.play().catch(()=>{});
+      musicOn = true;
+    }
+    setMusicIcon();
+  });
 </script>
 
 </body>
