@@ -455,9 +455,37 @@
     .h-titulo{ font-size: 42px; }
     .countdown .box{ width: 58px; padding: 10px 4px; }
   }
+
+  /* -------- Música de fondo -------- */
+  .music-toggle{
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    z-index: 999;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    border: 2px solid var(--gold);
+    background: linear-gradient(120deg, var(--red), var(--copper));
+    color: #fff;
+    font-size: 22px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+  }
+  .music-toggle.playing{ animation: musicPulse 1.6s ease-in-out infinite; }
+  @keyframes musicPulse{
+    0%,100%{ box-shadow: 0 0 0 0 rgba(242,193,78,0.5); }
+    50%{ box-shadow: 0 0 0 10px rgba(242,193,78,0); }
+  }
 </style>
 </head>
 <body>
+
+<audio id="bgMusic" src="audio/musica-fondo.mp3" loop preload="auto"></audio>
+<button id="musicToggle" class="music-toggle" aria-label="Reproducir música">🎵</button>
 
 <div class="scroll-progress" id="scrollProgress"></div>
 
@@ -631,6 +659,37 @@
   }
   tick();
   setInterval(tick, 1000);
+
+  // Música de fondo
+  const bgMusic = document.getElementById('bgMusic');
+  const musicToggle = document.getElementById('musicToggle');
+
+  function playMusic(){
+    bgMusic.play().then(()=>{
+      musicToggle.textContent = '🔊';
+      musicToggle.classList.add('playing');
+    }).catch(()=>{});
+  }
+  function pauseMusic(){
+    bgMusic.pause();
+    musicToggle.textContent = '🎵';
+    musicToggle.classList.remove('playing');
+  }
+
+  musicToggle.addEventListener('click', ()=>{
+    if(bgMusic.paused){ playMusic(); } else { pauseMusic(); }
+  });
+
+  // Intenta reproducir en cuanto el usuario interactúa por primera vez con la página
+  function autoplayOnFirstInteraction(){
+    if(bgMusic.paused){ playMusic(); }
+    window.removeEventListener('scroll', autoplayOnFirstInteraction);
+    window.removeEventListener('click', autoplayOnFirstInteraction);
+    window.removeEventListener('touchstart', autoplayOnFirstInteraction);
+  }
+  window.addEventListener('scroll', autoplayOnFirstInteraction, { once:true });
+  window.addEventListener('click', autoplayOnFirstInteraction, { once:true });
+  window.addEventListener('touchstart', autoplayOnFirstInteraction, { once:true });
 </script>
 
 </body>
